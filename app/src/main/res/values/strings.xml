@@ -10,4 +10,11 @@
       the License.
       -->
     <string name="app_name">AndroidDevChallenge</string>
+    <string name="switch_light">Switch to light theme</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="chicago">Chicago</string>
+    <string name="temperature">39°</string>
+    <string name="days">Days</string>
+    <string name="no_data">No data</string>
 </resources>

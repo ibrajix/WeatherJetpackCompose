@@ -18,19 +18,37 @@ package com.example.androiddevchallenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.androiddevchallenge.components.DisplayView
 import com.example.androiddevchallenge.ui.theme.MyTheme
+import com.example.androiddevchallenge.utils.TransparentStatusBar
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
+            // check current theme and change via toggle
+            val currentTheme = isSystemInDarkTheme()
+
+            if (!isSystemInDarkTheme()) {
+                TransparentStatusBar(windows = window)
+            }
+
+            val changeTheme: () -> Unit = {
+                if (currentTheme) {
+                    setDayTheme()
+                } else {
+                    setDarkTheme()
+                }
+            }
+
             MyTheme {
-                MyApp()
+
+                MyApp(changeTheme)
             }
         }
     }
@@ -38,17 +56,15 @@ class MainActivity : AppCompatActivity() {
 
 // Start building your app here!
 @Composable
-fun MyApp() {
-    Surface(color = MaterialTheme.colors.background) {
-        Text(text = "Ready... Set... GO!")
-    }
+fun MyApp(changeTheme: () -> Unit) {
+    DisplayView(onToggle = changeTheme)
 }
 
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp()
+        MyApp(changeTheme = {})
     }
 }
 
@@ -56,6 +72,14 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        MyApp()
+        MyApp(changeTheme = {})
     }
+}
+
+private fun setDayTheme() {
+    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+}
+
+private fun setDarkTheme() {
+    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 }
